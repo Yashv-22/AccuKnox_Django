@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Rectangle Class Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .code-container {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .keyword {
+            color: #569cd6;
+        }
+        .builtin {
+            color: #4ec9b0;
+        }
+        .string {
+            color: #ce9178;
+        }
+        .comment {
+            color: #6a9955;
+        }
+        .operator {
+            color: #d4d4d4;
+        }
+        .rectangle-visualization {
+            transition: all 0.3s ease;
+        }
+        .rectangle-info {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .rectangle:hover .rectangle-info {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-700 mb-2">Python Rectangle Class</h1>
+            <p class="text-lg text-gray-600">An interactive demo of iterator protocol implementation</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Python Implementation</h2>
+                <div class="code-container">
+                    <pre><span class="keyword">class</span> <span class="builtin">Rectangle</span>:
+    <span class="keyword">def</span> <span class="builtin">__init__</span>(<span class="keyword">self</span>, length: <span class="builtin">int</span>, width: <span class="builtin">int</span>):
+        <span class="keyword">self</span>.length = length
+        <span class="keyword">self</span>.width = width
+    
+    <span class="keyword">def</span> <span class="builtin">__iter__</span>(<span class="keyword">self</span>):
+        <span class="keyword">self</span>._iter_index = <span class="builtin">0</span>
+        <span class="keyword">return</span> <span class="keyword">self</span>
+    
+    <span class="keyword">def</span> <span class="builtin">__next__</span>(<span class="keyword">self</span>):
+        <span class="keyword">if</span> <span class="keyword">self</span>._iter_index == <span class="builtin">0</span>:
+            <span class="keyword">self</span>._iter_index += <span class="builtin">1</span>
+            <span class="keyword">return</span> {<span class="string">'length'</span>: <span class="keyword">self</span>.length}
+        <span class="keyword">elif</span> <span class="keyword">self</span>._iter_index == <span class="builtin">1</span>:
+            <span class="keyword">self</span>._iter_index += <span class="builtin">1</span>
+            <span class="keyword">return</span> {<span class="string">'width'</span>: <span class="keyword">self</span>.width}
+        <span class="keyword">else</span>:
+            <span class="keyword">raise</span> <span class="builtin">StopIteration</span></pre>
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded border border-blue-200">
+                    <h3 class="text-lg font-medium text-blue-800 mb-2">Key Points:</h3>
+                    <ul class="list-disc pl-5 text-blue-700">
+                        <li>Implements iterator protocol with <code>__iter__</code> and <code>__next__</code></li>
+                        <li>Returns length first, then width on each iteration</li>
+                        <li>Raises <code>StopIteration</code> after yielding both dimensions</li>
+                        <li>Type hints enforce integers for length and width</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Interactive Demo</h2>
+                <div class="mb-6">
+                    <label for="length" class="block text-sm font-medium text-gray-700 mb-1">Length</label>
+                    <input type="number" id="length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" max="20" value="5">
+                </div>
+                <div class="mb-6">
+                    <label for="width" class="block text-sm font-medium text-gray-700 mb-1">Width</label>
+                    <input type="number" id="width" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" max="20" value="3">
+                </div>
+                <button id="visualize-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+                    Visualize Rectangle
+                </button>
+                <div id="visualization-container" class="mt-6 flex flex-col items-center">
+                    <img src="https://placehold.co/800x500/d1d5db/374151" alt="Empty canvas waiting for rectangle visualization" id="placeholder-image" class="rounded-lg"/>
+                    <div id="rectangle-container" class="hidden">
+                        <div class="rectangle-visualization mx-auto mb-8 flex justify-center">
+                            <div id="rectangle" class="rectangle bg-indigo-100 border-2 border-indigo-300 relative">
+                                <div class="rectangle-info absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                    <div class="text-white font-medium text-center p-4">
+                                        <p>Length: <span id="vis-length">5</span> units</p>
+                                        <p>Width: <span id="vis-width">3</span> units</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-2">Iteration Output:</h3>
+                            <div id="iteration-output" class="bg-gray-100 p-3 rounded-md font-mono text-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('visualize-btn').addEventListener('click', function() {
+            const length = parseInt(document.getElementById('length').value);
+            const width = parseInt(document.getElementById('width').value);
+            
+            // Update visualization
+            const rectangle = document.getElementById('rectangle');
+            rectangle.style.width = `${length * 40}px`;
+            rectangle.style.height = `${width * 40}px`;
+            
+            document.getElementById('vis-length').textContent = length;
+            document.getElementById('vis-width').textContent = width;
+            
+            // Hide placeholder and show rectangle
+            document.getElementById('placeholder-image').classList.add('hidden');
+            document.getElementById('rectangle-container').classList.remove('hidden');
+            
+            // Demonstrate iteration
+            const outputElement = document.getElementById('iteration-output');
+            outputElement.innerHTML = '';
+            
+            // Simulate Python iteration
+            const rectObj = { length, width };
+            
+            function* rectangleIterator(obj) {
+                yield { 'length': obj.length };
+                yield { 'width': obj.width };
+            }
+            
+            const iterator = rectangleIterator(rectObj);
+            
+            for (const item of iterator) {
+                const resultLine = document.createElement('div');
+                resultLine.className = 'mb-1';
+                resultLine.textContent = JSON.stringify(item);
+                outputElement.appendChild(resultLine);
+            }
+        });
+
+        // Initialize with default visualization
+        document.getElementById('visualize-btn').click();
+    </script>
+</body>
+</html>
